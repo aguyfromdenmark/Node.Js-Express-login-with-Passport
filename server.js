@@ -14,15 +14,17 @@ mongoose.Promise = global.Promise;
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(session({ secret: 'verySecretSecret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+var initPassport = require('./app/passport/init');
+initPassport(passport);
 
-app.use('/api', require('./app/routes/api'));
-
-
+var routes = require('./app/routes/api')(passport);
+app.use('/api', routes);
 
 /*app.use(function(err,req,res,next){
     res.status(422).send({error:err.message});

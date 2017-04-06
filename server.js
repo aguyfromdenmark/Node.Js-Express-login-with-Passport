@@ -7,7 +7,7 @@ const app = express();
 mongoose.connect("mongodb://localhost/assignment1");
 mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
-app.use('/api', require('./api'));
+app.use('/api', require('./app/routes/api'));
 
 
 

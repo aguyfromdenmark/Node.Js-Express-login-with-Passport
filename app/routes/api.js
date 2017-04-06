@@ -35,18 +35,19 @@ module.exports = function (passport) {
 
     router.get('/weather', isLoggedIn, function (req, res) {
         User.findOne({ user: req.query.username }).then(function (user) {
+            console.log("Logged innnnnnnn");
             res.send(user);
         });
     });
 
     router.post('/login', passport.authenticate('login', {
-		successRedirect: '/weather',
+		successRedirect: '/api/weather',
 		failureRedirect: '/',
     }));
 
     // add a new user to the db
-    router.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/weather', // redirect to the secure profile section
+    router.post('/signup', passport.authenticate('signup', {
+        successRedirect: '/api/weather', // redirect to the secure profile section
         failureRedirect: '/signup', // redirect back to the signup page if there is an error
 
     }));
@@ -65,7 +66,7 @@ module.exports = function (passport) {
         if (req.isAuthenticated())
             return next();
 
-        // res.redirect('/');
+        res.redirect('/');
     }
 
     return router;

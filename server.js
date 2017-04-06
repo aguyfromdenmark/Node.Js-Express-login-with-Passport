@@ -23,8 +23,11 @@ app.use(flash());
 var initPassport = require('./app/passport/init');
 initPassport(passport);
 
-var routes = require('./app/routes/api')(passport);
-app.use('/api', routes);
+var apiRoute = require('./app/routes/api')(passport);
+app.use('/api', apiRoute);
+
+var applicationRoute = require('./app/routes/application')(passport);
+app.use('/application',applicationRoute);  
 
 /*app.use(function(err,req,res,next){
     res.status(422).send({error:err.message});

@@ -1,12 +1,22 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('passport');
 const mongoose = require('mongoose');
 
 const app = express();
 
+app.use(express.static('public'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(session({ secret: 'verySecretSecret' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.connect("mongodb://localhost/assignment1");
 mongoose.Promise = global.Promise;
-app.use(bodyParser.json());
+
 app.use('/api', require('./app/routes/api'));
 
 
@@ -15,6 +25,6 @@ app.use('/api', require('./app/routes/api'));
     res.status(422).send({error:err.message});
 });*/
 
-app.listen(process.env.port || 4000,function(){
+app.listen(process.env.port || 4000, function () {
     console.log('The server is now listening for requests');
 });

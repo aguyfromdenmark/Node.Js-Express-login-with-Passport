@@ -1,19 +1,28 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
 
 
 // create user Schema & model
 const UserSchema = new Schema({
-    name: {
+    email: {
         type: String,
-        required: [true, 'Name field is required']
+        required: [true, 'Email field is required']
     },
-    pass: {
+    password: {
         type: String,
-        required: [true, 'Name field is required']
+        required: [true, 'Password field is required']
     }   
 });
 //TODO add correct user info + valiadtion/auth
+
+UserSchema.methods.generateHash = function(password){
+    return bcrypt.hashSync(password,bcrypt.genSaltSync(8),null);
+};
+
+UserSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
 const User = mongoose.model('user', UserSchema);
 

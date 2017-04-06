@@ -3,9 +3,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const flash = require('connect-flash');
 const mongoose = require('mongoose');
 
 const app = express();
+
+mongoose.connect("mongodb://localhost/assignment1");
+mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
 app.use(cookieParser());
@@ -13,9 +17,8 @@ app.use(bodyParser.json());
 app.use(session({ secret: 'verySecretSecret' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
-mongoose.connect("mongodb://localhost/assignment1");
-mongoose.Promise = global.Promise;
 
 app.use('/api', require('./app/routes/api'));
 
